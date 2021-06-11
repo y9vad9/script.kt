@@ -12,7 +12,7 @@ open class Test(val test: String)
 
 KScript("println(test)").apply {
     configuration.addClasspath(classpathFromClassOrException(Test::class))
-    configuration.setBaseClass<Test>(arguments = "test")
+    configuration.setBaseClass<Test>(arguments = arrayOf("test"))
 }.eval()
 ```
 
