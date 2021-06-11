@@ -10,11 +10,7 @@ Convenient kotlin script running engine for JVM.
 ```kotlin
 open class Test(val test: String)
 
-val script = KScript(
-    """
-    println(test)
-""".trimIndent()
-).apply {
+KScript("println(test)").apply {
     configuration.addClasspath(classpathFromClassOrException(Test::class))
     configuration.setBaseClass<Test>(arguments = "test")
 }.eval()
