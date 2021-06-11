@@ -1,5 +1,5 @@
 [![Last Version](https://badge.kotlingang.fun/maven/fun/kotlingang/kscript/kscript)](https://maven.kotlingang.fun/fun/kotlingang/kscript/)
-[![Hits-of-Code](https://hitsofcode.com/github/kotlingang/kds)](https://hitsofcode.com/view/github/kotlingang/kds)
+[![Hits-of-Code](https://hitsofcode.com/github/kotlingang/KScript)](https://hitsofcode.com/view/github/kotlingang/KScript)
 
 # KScript
 
