@@ -7,6 +7,7 @@ Convenient kotlin script running engine for JVM.
 
 ## Examples
 
+### Base class:
 ```kotlin
 open class Test(val test: String)
 
@@ -15,13 +16,23 @@ val script = KScript(
     println(test)
 """.trimIndent()
 ).apply {
-    configuration.addClasspath(classpathFromClassOrException(Test::class))
+    configuration.addClasspath(classpathFromClass<Test>())
     configuration.setBaseClass<Test>(arguments = "test")
 }.eval()
 ```
 
+### External dependencies
+By default, library uses [MavenExternalResolver](src/main/kotlin/fun/kotlingang/kscript/configuration/impls/MavenExternalResolver.kt), but we can change it:
+```kotlin
+val script = """...""".toKScript()
+script.configuration.externalResolver = FilesExternalResolver(File("..."), File("...")) // one of the default implementations.
+script.eval()
+```
+Also, we can cache it:
+```kotlin
+script.configuration.externalResolver = CacheableMavenResolver(File("path_to_cache_folder"))
+```
 ## Implementation
-
 ```kotlin
 repositories {
     maven("https://maven.kotlingang.fun")

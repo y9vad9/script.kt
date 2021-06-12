@@ -1,50 +1,49 @@
 package `fun`.kotlingang.kscript
 
-import `fun`.kotlingang.kscript.annotations.DelicateKScriptAPI
-import `fun`.kotlingang.kscript.impls.BaseClass
-import `fun`.kotlingang.kscript.impls.KScriptConfigurationImpl
+import `fun`.kotlingang.kscript.configuration.KScriptConfiguration
 import `fun`.kotlingang.kscript.impls.KScriptJvmImpl
 import java.io.File
-import kotlin.reflect.KClass
-import kotlin.script.experimental.api.*
-import kotlin.script.experimental.jvm.updateClasspath
-import kotlin.script.experimental.jvm.util.classpathFromClass
+import kotlin.script.experimental.api.EvaluationResult
+import kotlin.script.experimental.api.ResultWithDiagnostics
 
 /**
- * @return [KScript] from [code].
+ * Creates instance of [KScript].
+ * @param code - script source code.
+ * @return [KScript].
  */
 public fun KScript(code: String): KScript = KScriptJvmImpl(code)
 
 /**
- * @return [KScript] from [file].
+ * Creates instance of [KScript].
+ * @param file - file with script.
+ * @return [KScript].
  */
-public fun KScript(file: File): KScript = KScriptJvmImpl(file.readText())
+public fun KScript(file: File): KScript = KScript(file.readText())
 
 /**
- * @return new instance of [KScriptConfiguration].
+ * Evaluates [code].
+ * @param code - script source code.
+ * @return [ResultWithDiagnostics] of [EvaluationResult].
  */
-@DelicateKScriptAPI
-public fun KScriptConfiguration(): KScriptConfiguration = KScriptConfigurationImpl()
-
-internal fun KScriptConfigurationImpl.toCompilationConfiguration(): ScriptCompilationConfiguration =
-    ScriptCompilationConfiguration {
-        val configuration = this@toCompilationConfiguration
-        configuration.baseClass?.let(BaseClass::kClass)?.let { baseClass(it) }
-        implicitReceivers(*configuration.implicitReceivers.map { KotlinType(it.kClass) }.toTypedArray())
-        updateClasspath(configuration.classPath)
-    }
+public suspend fun eval(code: String, consumer: KScript.() -> Unit): ResultWithDiagnostics<EvaluationResult> =
+    KScript(code).apply(consumer).eval()
 
 /**
- * @return [List] of [File] from [kClass] or throws [IllegalStateException].
+ * Evaluates code from [file].
  */
-public fun classpathFromClassOrException(kClass: KClass<*>): List<File> =
-    classpathFromClass(kClass) ?: error("Unable to get classpath from class ${kClass.simpleName}")
+public suspend fun eval(file: File, consumer: KScript.() -> Unit): ResultWithDiagnostics<EvaluationResult> =
+    eval(file.readText(), consumer)
 
-internal fun KScriptConfigurationImpl.toEvaluationConfiguration(): ScriptEvaluationConfiguration =
-    ScriptEvaluationConfiguration {
-        val configuration = this@toEvaluationConfiguration
-        configuration.baseClass?.arguments?.toList()?.let {
-            constructorArgs(v = it)
-        }
-        implicitReceivers(*configuration.implicitReceivers.map { it.value }.toTypedArray())
-    }
+/**
+ * Creates instance of [KScript].
+ * @param code - code of script.
+ * @param configuration - script configuration.
+ */
+public fun KScript(code: String, configuration: KScriptConfiguration): KScript = KScript(code, configuration)
+
+/**
+ * Creates [KScript] from [String]
+ */
+public fun String.toKScript(configuration: KScriptConfiguration = KScriptConfiguration()): KScript =
+    KScript(this, configuration)
+

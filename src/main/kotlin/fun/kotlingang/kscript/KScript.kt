@@ -1,24 +1,18 @@
 package `fun`.kotlingang.kscript
 
-import `fun`.kotlingang.kscript.dependency.DependencyResolver
+import `fun`.kotlingang.kscript.configuration.KScriptConfiguration
 import kotlin.script.experimental.api.EvaluationResult
 import kotlin.script.experimental.api.ResultWithDiagnostics
 
 public interface KScript {
     /**
-     * Kotlin Script Configuration.
+     * Configuration of the script.
      */
     public val configuration: KScriptConfiguration
 
     /**
-     * Sets dependency resolver.
-     * @param resolver - external dependency resolver
-     */
-    public fun setDependencyResolver(resolver: DependencyResolver)
-
-    /**
      * Evaluates script.
-     * @return [ResultWithDiagnostics] of [EvaluationResult] with info about evaluation.
+     * @return [ResultWithDiagnostics] of [EvaluationResult].
      */
     public suspend fun eval(): ResultWithDiagnostics<EvaluationResult>
 }

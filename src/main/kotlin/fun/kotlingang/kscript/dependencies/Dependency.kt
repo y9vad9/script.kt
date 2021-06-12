@@ -1,9 +1,6 @@
-package `fun`.kotlingang.kscript.dependency
+package `fun`.kotlingang.kscript.dependencies
 
-/**
- * Dependency info.
- */
-public open class Dependency(
+public data class Dependency(
     public val groupId: String,
     public val artifactId: String,
     public val version: String

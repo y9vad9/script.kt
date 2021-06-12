@@ -1,4 +1,4 @@
 object Library {
     const val GROUP = "fun.kotlingang.kscript"
-    const val VERSION = "0.0.1"
+    const val VERSION = "0.1.0"
 }
