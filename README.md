@@ -2,7 +2,6 @@
 [![Hits-of-Code](https://hitsofcode.com/github/kotlingang/KScript)](https://hitsofcode.com/view/github/kotlingang/KScript)
 
 # KScript
-
 Convenient kotlin script running engine for JVM.
 
 ## Examples
@@ -29,6 +28,7 @@ Also, we can cache it:
 script.configuration.externalResolver = CacheableMavenResolver(File("path_to_cache_folder"))
 ```
 ## Implementation
+> For now not everything is implemented, but it will be available [upon request](https://github.com/kotlingang/KScript/issues/new).
 ```kotlin
 repositories {
     maven("https://maven.kotlingang.fun")
