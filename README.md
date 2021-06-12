@@ -11,13 +11,9 @@ Convenient kotlin script running engine for JVM.
 ```kotlin
 open class Test(val test: String)
 
-val script = KScript(
-    """
-    println(test)
-""".trimIndent()
-).apply {
-    configuration.addClasspath(classpathFromClass<Test>())
-    configuration.setBaseClass<Test>(arguments = "test")
+KScript("println(test)").apply {
+    configuration.addClasspath(classpathFromClassOrException(Test::class))
+    configuration.setBaseClass<Test>(arguments = arrayOf("test"))
 }.eval()
 ```
 
