@@ -3,10 +3,12 @@ package `fun`.kotlingang.kscript
 import `fun`.kotlingang.kscript.configuration.KScriptConfiguration
 import `fun`.kotlingang.kscript.impls.KScriptJvmImpl
 import java.io.File
+import kotlin.reflect.KClass
 import kotlin.script.experimental.api.EvaluationResult
 import kotlin.script.experimental.api.ResultWithDiagnostics
 import kotlin.script.experimental.api.SourceCode
 import kotlin.script.experimental.host.toScriptSource
+import kotlin.script.experimental.jvm.util.classpathFromClass
 
 /**
  * Creates instance of [KScript].
@@ -50,4 +52,18 @@ public fun KScript(code: String, configuration: KScriptConfiguration): KScript =
  */
 public fun String.toKScript(configuration: KScriptConfiguration = KScriptConfiguration()): KScript =
     KScript(this, configuration)
+
+/**
+ * Gets classpath from [kClass] or throws exception.
+ */
+@Throws(IllegalStateException::class)
+public fun classpathFromClassOrException(kClass: KClass<*>): Collection<File> =
+    classpathFromClass(kClass) ?: error("unable to get classpath.")
+
+/**
+ * Gets class from [kClass] or returns null.
+ * @return [Collection] of [File] or null.
+ */
+public fun classpathFromClassOrNull(kClass: KClass<*>): Collection<File>? =
+    classpathFromClass(kClass)
 

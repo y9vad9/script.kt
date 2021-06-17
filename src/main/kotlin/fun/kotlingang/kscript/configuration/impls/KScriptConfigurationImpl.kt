@@ -26,6 +26,7 @@ internal class KScriptConfigurationImpl : KScriptConfiguration {
     }
 
     override val includedScripts: MutableSet<KScriptSource> = mutableSetOf()
+    override var buildCacheDirectory: File? = null
 
     override fun includeScript(script: KScriptSource) {
         includedScripts.add(script)

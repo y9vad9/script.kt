@@ -7,13 +7,19 @@ import `fun`.kotlingang.kscript.annotations.UnsafeConstructorArgs
 import `fun`.kotlingang.kscript.configuration.impls.KScriptConfigurationImpl
 import `fun`.kotlingang.kscript.dependencies.Dependency
 import `fun`.kotlingang.kscript.dependencies.toDependency
+import `fun`.kotlingang.kscript.internal.Digest.toMD5
 import `fun`.kotlingang.kscript.toSourceCode
 import kotlinx.coroutines.runBlocking
+import java.io.File
 import kotlin.script.experimental.api.*
 import kotlin.script.experimental.dependencies.DependsOn
 import kotlin.script.experimental.dependencies.Repository
+import kotlin.script.experimental.host.ScriptingHostConfiguration
+import kotlin.script.experimental.jvm.compilationCache
+import kotlin.script.experimental.jvm.jvm
 import kotlin.script.experimental.jvm.updateClasspath
 import kotlin.script.experimental.jvm.withUpdatedClasspath
+import kotlin.script.experimental.jvmhost.CompiledScriptJarsCache
 import `fun`.kotlingang.kscript.dependencies.Repository as Repo
 
 /**
@@ -60,6 +66,16 @@ public fun KScriptConfiguration.toCompilationConfiguration(): ScriptCompilationC
                 handler = configuration.externalResolver::resolveDependencyAnnotations
             )
         }
+        hostConfiguration(ScriptingHostConfiguration {
+            jvm {
+                if(configuration.buildCacheDirectory != null)
+                    compilationCache(
+                        CompiledScriptJarsCache { script, _ ->
+                            File(configuration.buildCacheDirectory, script.text.toMD5() + ".jar")
+                        }
+                    )
+            }
+        })
         updateClasspath(configuration.classpath)
     }
 

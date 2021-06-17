@@ -1,6 +1,5 @@
 package `fun`.kotlingang.kscript.configuration
 
-import `fun`.kotlingang.kscript.KScript
 import `fun`.kotlingang.kscript.KScriptSource
 import `fun`.kotlingang.kscript.annotations.UnsafeConstructorArgs
 import java.io.File
@@ -50,6 +49,12 @@ public interface KScriptConfiguration {
      * All included in build / running process scripts.
      */
     public val includedScripts: Collection<KScriptSource>
+
+    /**
+     * Directory for build's cache.
+     * Should be null if you don't need a caching.
+     */
+    public var buildCacheDirectory: File?
 
     /**
      * Includes script into compilation & evaluation process.
