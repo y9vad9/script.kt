@@ -5,6 +5,8 @@ import `fun`.kotlingang.kscript.impls.KScriptJvmImpl
 import java.io.File
 import kotlin.script.experimental.api.EvaluationResult
 import kotlin.script.experimental.api.ResultWithDiagnostics
+import kotlin.script.experimental.api.SourceCode
+import kotlin.script.experimental.host.toScriptSource
 
 /**
  * Creates instance of [KScript].
@@ -33,6 +35,8 @@ public suspend fun eval(code: String, consumer: KScript.() -> Unit): ResultWithD
  */
 public suspend fun eval(file: File, consumer: KScript.() -> Unit): ResultWithDiagnostics<EvaluationResult> =
     eval(file.readText(), consumer)
+
+internal fun KScriptSource.toSourceCode(): SourceCode = source.toScriptSource()
 
 /**
  * Creates instance of [KScript].

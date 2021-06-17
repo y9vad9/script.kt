@@ -15,6 +15,8 @@ internal class KScriptJvmImpl(
     private val code: String,
     override val configuration: KScriptConfiguration = KScriptConfiguration()
 ) : KScript {
+    override val source: String get() = code
+
     @OptIn(`fun`.kotlingang.kscript.annotations.DelicateKScriptAPI::class)
     override suspend fun eval(): ResultWithDiagnostics<EvaluationResult> = withContext(Dispatchers.IO) {
         return@withContext BasicJvmScriptingHost().eval(

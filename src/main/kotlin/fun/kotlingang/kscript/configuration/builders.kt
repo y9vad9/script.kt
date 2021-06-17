@@ -7,6 +7,7 @@ import `fun`.kotlingang.kscript.annotations.UnsafeConstructorArgs
 import `fun`.kotlingang.kscript.configuration.impls.KScriptConfigurationImpl
 import `fun`.kotlingang.kscript.dependencies.Dependency
 import `fun`.kotlingang.kscript.dependencies.toDependency
+import `fun`.kotlingang.kscript.toSourceCode
 import kotlinx.coroutines.runBlocking
 import kotlin.script.experimental.api.*
 import kotlin.script.experimental.dependencies.DependsOn
@@ -50,6 +51,8 @@ public fun KScriptConfiguration.toCompilationConfiguration(): ScriptCompilationC
         val configuration = this@toCompilationConfiguration
         configuration.baseClass?.let(BaseClass::kClass)?.let { baseClass(it) }
         implicitReceivers(*configuration.implicitReceivers.map { KotlinType(it.kClass) }.toTypedArray())
+        configuration.defaultImports.forEach { defaultImports(it) }
+        configuration.includedScripts.forEach { importScripts(it.toSourceCode()) }
         refineConfiguration {
             onAnnotations(
                 DependsOn::class,

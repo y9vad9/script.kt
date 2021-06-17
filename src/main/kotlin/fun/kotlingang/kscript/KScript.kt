@@ -4,7 +4,7 @@ import `fun`.kotlingang.kscript.configuration.KScriptConfiguration
 import kotlin.script.experimental.api.EvaluationResult
 import kotlin.script.experimental.api.ResultWithDiagnostics
 
-public interface KScript {
+public interface KScript : KScriptSource {
     /**
      * Configuration of the script.
      */

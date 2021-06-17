@@ -1,5 +1,7 @@
 package `fun`.kotlingang.kscript.configuration
 
+import `fun`.kotlingang.kscript.KScript
+import `fun`.kotlingang.kscript.KScriptSource
 import `fun`.kotlingang.kscript.annotations.UnsafeConstructorArgs
 import java.io.File
 import kotlin.reflect.KClass
@@ -34,6 +36,28 @@ public interface KScriptConfiguration {
     public val classpath: Collection<File>
 
     /**
+     * Default imports script imports.
+     */
+    public val defaultImports: Collection<String>
+
+    /**
+     * Adds default import to script.
+     * @param import - package.
+     */
+    public fun addDefaultImport(import: String)
+
+    /**
+     * All included in build / running process scripts.
+     */
+    public val includedScripts: Collection<KScriptSource>
+
+    /**
+     * Includes script into compilation & evaluation process.
+     * @param script - script to include.
+     */
+    public fun includeScript(script: KScriptSource)
+
+    /**
      * Adds [files] to classpath.
      */
     public fun addClasspath(files: Collection<File>)
@@ -56,4 +80,20 @@ public inline fun <reified T : Any> KScriptConfiguration.addImplicitReceiver(ins
 @UnsafeConstructorArgs
 public inline fun <reified T : Any> KScriptConfiguration.setBaseClass(vararg args: Any?) {
     baseClass = BaseClass(T::class, args)
+}
+
+/**
+ * Adds default imports to script.
+ * @param packages - packages to import by default.
+ */
+public fun KScriptConfiguration.addDefaultImports(vararg packages: String): Unit = packages.forEach {
+    addDefaultImport(it)
+}
+
+/**
+ * Includes scripts to building / running process.
+ * @param scripts - scripts to include.
+ */
+public fun KScriptConfiguration.includeScripts(vararg scripts: KScriptSource): Unit = scripts.forEach {
+    includeScript(it)
 }

@@ -1,5 +1,6 @@
 package `fun`.kotlingang.kscript.configuration.impls
 
+import `fun`.kotlingang.kscript.KScriptSource
 import `fun`.kotlingang.kscript.configuration.BaseClass
 import `fun`.kotlingang.kscript.configuration.ExternalResolver
 import `fun`.kotlingang.kscript.configuration.ImplicitReceiver
@@ -18,6 +19,17 @@ internal class KScriptConfigurationImpl : KScriptConfiguration {
 
     override var externalResolver: ExternalResolver = MavenExternalResolver()
     override val classpath: MutableSet<File> = mutableSetOf()
+    override val defaultImports: MutableSet<String> = mutableSetOf()
+
+    override fun addDefaultImport(import: String) {
+        defaultImports.add(import)
+    }
+
+    override val includedScripts: MutableSet<KScriptSource> = mutableSetOf()
+
+    override fun includeScript(script: KScriptSource) {
+        includedScripts.add(script)
+    }
 
     override fun addClasspath(files: Collection<File>) {
         classpath.addAll(files)
