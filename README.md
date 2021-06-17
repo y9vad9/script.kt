@@ -2,7 +2,7 @@
 [![Hits-of-Code](https://hitsofcode.com/github/kotlingang/KScript)](https://hitsofcode.com/view/github/kotlingang/KScript)
 
 # KScript
-Convenient kotlin script running engine for JVM.
+Convenient kotlin script wrapper for JVM.
 
 ## How it works
 
