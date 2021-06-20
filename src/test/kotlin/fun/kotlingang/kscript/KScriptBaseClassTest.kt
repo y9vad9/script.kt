@@ -9,10 +9,10 @@ import org.junit.platform.commons.annotation.Testable
 import kotlin.script.experimental.jvm.util.classpathFromClass
 import kotlin.script.experimental.jvm.util.isError
 
-open class Base(val test: String)
+public open class Base(public val test: String)
 
 @Testable
-class KScriptBaseClassTest {
+public class KScriptBaseClassTest {
 
     private val script = """
         println(test)
@@ -20,7 +20,7 @@ class KScriptBaseClassTest {
 
     @OptIn(UnsafeConstructorArgs::class)
     @Test
-    fun test() = runBlocking {
+    public fun test(): Unit = runBlocking {
         assertFalse(eval(script) {
             configuration.addClasspath(classpathFromClass<Base>()!!)
             configuration.setBaseClass<Base>("test")

@@ -8,21 +8,21 @@ import org.junit.platform.commons.annotation.Testable
 import kotlin.script.experimental.jvm.util.classpathFromClass
 import kotlin.script.experimental.jvm.util.isError
 
-class Implicit(
-    val test: String
+public class Implicit(
+    public val test: String
 )
 
 @Testable
-class KScriptImplicitTest {
+public class KScriptImplicitTest {
 
     private val script = """
         println(test)
     """.trimIndent()
 
     @Test
-    fun test(): Unit = runBlocking {
+    public fun test(): Unit = runBlocking {
         assertFalse(eval(script) {
-            configuration.addClasspath(classpathFromClass<Implicit>()!!)
+            configuration.addClasspath(classpathFromClassOrException<Implicit>())
             configuration.addImplicitReceiver(Implicit("test"))
         }.isError())
     }
