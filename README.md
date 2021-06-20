@@ -41,7 +41,7 @@ Library provides API to add external scripts into
 your script runtime. You can do it by
 `includeScript`:
 ```kotlin
-val script = text.toScript()
+val script = text.toKScript()
 script.includeScript(other.toKScriptSource())
 ```
 Or directly in script using `@ImportFile`
