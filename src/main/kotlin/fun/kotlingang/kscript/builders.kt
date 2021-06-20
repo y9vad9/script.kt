@@ -61,9 +61,18 @@ public fun classpathFromClassOrException(kClass: KClass<*>): Collection<File> =
     classpathFromClass(kClass) ?: error("unable to get classpath.")
 
 /**
+ * Gets classpath from [C].
+ */
+public inline fun <reified C> classpathFromClassOrException(): Collection<File> =
+    classpathFromClassOrException(C::class)
+
+/**
  * Gets class from [kClass] or returns null.
  * @return [Collection] of [File] or null.
  */
 public fun classpathFromClassOrNull(kClass: KClass<*>): Collection<File>? =
     classpathFromClass(kClass)
+
+public inline fun <reified C> classpathFromClassOrNull(): Collection<File>? =
+    classpathFromClassOrNull(C::class)
 
