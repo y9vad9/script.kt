@@ -17,15 +17,15 @@ KScript("println(test)").apply {
 ```
 
 ### External dependencies
-By default, library uses [MavenExternalResolver](src/main/kotlin/fun/kotlingang/kscript/configuration/impls/MavenExternalResolver.kt), but we can change it:
+By default, library uses [KScriptMavenResolver](src/main/kotlin/fun/kotlingang/kscript/dependencies/resolver/KScriptMavenResolver.kt), but we can change it:
 ```kotlin
 val script = """...""".toKScript()
-script.configuration.externalResolver = FilesExternalResolver(File("..."), File("...")) // one of the default implementations.
+script.configuration.externalResolvers.mavenResolver = KScriptMavenResolver() // one of the default implementations.
 script.eval()
 ```
 Also, we can cache it:
 ```kotlin
-script.configuration.externalResolver = CacheableMavenResolver(File("path_to_cache_folder"))
+script.configuration.externalResolver = KScriptCacheableMavenResolver(File("path_to_cache_folder"))
 ```
 ### Build caching
 ```kotlin
@@ -35,6 +35,23 @@ script.eval()
 ```
 Caching depends on the code (based on it, md5 is generated with a cache build) 
 and in order to update the cache, you will need to delete the cache file / folder or update something in the script.
+
+### External Scripts
+Library provides API to add external scripts into
+your script runtime. You can do it by
+`includeScript`:
+```kotlin
+val script = text.toScript()
+script.includeScript(other.toKScriptSource())
+```
+Or directly in script using `@ImportFile`
+annotation:
+```kotlin
+@file:ImportFile("other.kts")
+// ...
+// ...
+funFromOtherScript()
+ ```
 
 ## Implementation
 > For now not everything is implemented, but it will be available [upon request](https://github.com/kotlingang/KScript/issues/new).

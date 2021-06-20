@@ -77,3 +77,8 @@ public fun classpathFromClassOrNull(kClass: KClass<*>): Collection<File>? =
 public inline fun <reified C> classpathFromClassOrNull(): Collection<File>? =
     classpathFromClassOrNull(C::class)
 
+/**
+ * Creates [KScriptSource] from [String].
+ */
+public fun String.toKScriptSource(): KScriptSource = toKScript()
+
