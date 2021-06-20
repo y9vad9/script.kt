@@ -27,7 +27,7 @@ public interface KScriptConfiguration {
     /**
      * Handler for externals.
      */
-    public var externalResolver: ExternalResolver
+    public var externalResolvers: KScriptResolvers
 
     /**
      * Classpath of current script.
