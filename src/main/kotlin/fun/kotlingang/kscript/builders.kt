@@ -1,5 +1,6 @@
 package `fun`.kotlingang.kscript
 
+import `fun`.kotlingang.kscript.annotations.DelicateKScriptAPI
 import `fun`.kotlingang.kscript.configuration.KScriptConfiguration
 import `fun`.kotlingang.kscript.impls.KScriptJvmImpl
 import java.io.File
