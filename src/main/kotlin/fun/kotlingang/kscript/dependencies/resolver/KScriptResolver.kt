@@ -7,7 +7,6 @@ public interface KScriptResolver<M : ExternalResolverMetadata> {
     /**
      * Resolves [metadata].
      * @param metadata - metadata to resolve.
-     * @return [R].
      */
     public suspend fun resolve(metadata: M): Collection<File>
 }
