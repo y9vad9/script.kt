@@ -6,6 +6,6 @@ package `fun`.kotlingang.kscript.dependencies
  * @return [Dependency].
  */
 public fun String.toDependency(): Dependency {
-    val parts = split(":")
+    val parts = split(":", limit = 3)
     return Dependency(parts[0], parts[1], parts[2])
 }
