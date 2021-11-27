@@ -33,7 +33,7 @@ moduleKt(mainScript) {
 If you need to divide your scripting processes you can use modular system:
 
 ```kotlin
-val module = moduleOf(mainScript = kscriptOf(code = "..."))
+val module = moduleOf(mainScript = scriptOf(code = "..."))
 module.compilationConfiguration.apply { // for current state it is mutable
     baseClass = Foo::class
 }
