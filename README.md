@@ -48,7 +48,7 @@ compiledModule.evaluationConfiguration.apply { // it is mutable for current stat
     baseClassArguments = listOf("...")
 }
 
-val evaluationResult = compiledModule.evalute(evaluator = JvmHostModuleEvaluator())
+val evaluationResult = compiledModule.evaluate(evaluator = JvmHostModuleEvaluator())
 if (evaluationResult.isError())
     throw RuntimeException("stub!")
 
