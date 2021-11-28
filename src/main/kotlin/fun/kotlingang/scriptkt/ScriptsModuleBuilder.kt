@@ -4,11 +4,20 @@ import `fun`.kotlingang.scriptkt.annotation.ExperimentalScriptKtApi
 import `fun`.kotlingang.scriptkt.annotation.ScriptKtDSL
 import `fun`.kotlingang.scriptkt.annotation.UnsafeArgumentsInput
 import `fun`.kotlingang.scriptkt.compilation.CompilationFeature
+import `fun`.kotlingang.scriptkt.compilation.JvmHostModuleCompiler
+import `fun`.kotlingang.scriptkt.compilation.ModuleCompiler
 import `fun`.kotlingang.scriptkt.compilation.MutableCompilationConfiguration
 import `fun`.kotlingang.scriptkt.evaluation.EvaluationFeature
+import `fun`.kotlingang.scriptkt.evaluation.JvmHostModuleEvaluator
+import `fun`.kotlingang.scriptkt.evaluation.ModuleEvaluator
 import `fun`.kotlingang.scriptkt.evaluation.MutableEvaluationConfiguration
 import java.io.File
 import kotlin.reflect.KClass
+import kotlin.script.experimental.api.ResultWithDiagnostics
+import kotlin.script.experimental.api.ScriptDiagnostic
+import kotlin.script.experimental.api.valueOrNull
+import kotlin.script.experimental.api.valueOrThrow
+import kotlin.script.experimental.jvm.util.isError
 
 @ExperimentalScriptKtApi
 @ScriptKtDSL
@@ -80,6 +89,50 @@ public inline fun <reified T : Any> ScriptsModuleBuilder.setBaseClass(vararg arg
 @UnsafeArgumentsInput
 public inline fun <reified T : Any> ScriptsModuleBuilder.addImplicitReceiver(instance: T) {
     addImplicitReceiver(T::class, instance)
+}
+
+/**
+ * Compiles module and evaluates module.
+ * If any error happened it will return nullable value.
+ */
+@ExperimentalScriptKtApi
+public suspend fun NonCompiledConfiguredScriptsModule.runScriptOrNull(
+    compiler: ModuleCompiler = JvmHostModuleCompiler(),
+    evaluator: ModuleEvaluator = JvmHostModuleEvaluator()
+): EvaluatedScriptsModule? = try {
+    runScriptOrThrow(compiler, evaluator)
+} catch (e: Exception) {
+    e.printStackTrace()
+    null
+}
+
+/**
+ * Compiles module and evaluates module.
+ * If some error happened it will throw it.
+ */
+@ExperimentalScriptKtApi
+public suspend fun NonCompiledConfiguredScriptsModule.runScriptOrThrow(
+    compiler: ModuleCompiler = JvmHostModuleCompiler(),
+    evaluator: ModuleEvaluator = JvmHostModuleEvaluator()
+): EvaluatedScriptsModule {
+    return compile(compiler).valueOrThrow().evaluate(evaluator).valueOrThrow()
+}
+
+/**
+ * Compiles module and evaluates module.
+ * If some error happened it will throw it.
+ */
+@ExperimentalScriptKtApi
+public suspend fun NonCompiledConfiguredScriptsModule.runScriptReported(
+    compiler: ModuleCompiler = JvmHostModuleCompiler(),
+    evaluator: ModuleEvaluator = JvmHostModuleEvaluator()
+): ResultWithDiagnostics<EvaluatedScriptsModule> {
+    val reports: MutableList<ScriptDiagnostic> = mutableListOf()
+    val compileResult = compile(compiler).also { reports.addAll(it.reports) }
+    val evaluationResult = compileResult.valueOrNull()?.evaluate(evaluator)?.also { reports.addAll(it.reports) }
+    return if (compileResult.isError() || compileResult.isError())
+        ResultWithDiagnostics.Failure(reports)
+    else ResultWithDiagnostics.Success(evaluationResult!!.valueOrThrow(), reports)
 }
 
 @OptIn(ExperimentalScriptKtApi::class)
