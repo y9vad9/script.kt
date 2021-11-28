@@ -33,7 +33,7 @@ moduleKt(mainScript) {
 If you need to divide your scripting processes you can use modular system:
 
 ```kotlin
-val module = moduleOf(mainScript = kscriptOf(code = "..."))
+val module = moduleOf(mainScript = scriptOf(code = "..."))
 module.compilationConfiguration.apply { // for current state it is mutable
     baseClass = Foo::class
 }
@@ -48,7 +48,7 @@ compiledModule.evaluationConfiguration.apply { // it is mutable for current stat
     baseClassArguments = listOf("...")
 }
 
-val evaluationResult = compiledModule.evalute(evaluator = JvmHostModuleEvaluator())
+val evaluationResult = compiledModule.evaluate(evaluator = JvmHostModuleEvaluator())
 if (evaluationResult.isError())
     throw RuntimeException("stub!")
 
