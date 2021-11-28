@@ -6,10 +6,10 @@ public interface CompilationFeature {
     /**
      * Evaluates before setting specified by user configuration.
      */
-    public fun beforeConfiguring(builder: ScriptCompilationConfiguration.Builder) {}
+    public fun beforeConfigure(builder: ScriptCompilationConfiguration.Builder) {}
 
     /**
      * Evaluates after setting specified by user configuration.
      */
-    public fun afterConfiguring(builder: ScriptCompilationConfiguration.Builder) {}
+    public fun afterConfigure(builder: ScriptCompilationConfiguration.Builder) {}
 }

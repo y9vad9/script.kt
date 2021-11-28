@@ -6,7 +6,7 @@ import kotlin.script.experimental.api.*
 import kotlin.script.experimental.host.toScriptSource
 
 class ImportScriptCompilationFeature(private val rootDirectory: File) : CompilationFeature {
-    override fun afterConfiguring(builder: ScriptCompilationConfiguration.Builder) = with(builder) {
+    override fun afterConfigure(builder: ScriptCompilationConfiguration.Builder) = with(builder) {
         refineConfiguration {
             onAnnotations(ImportScript::class) { context ->
                 val sources = mutableListOf<SourceCode>()

@@ -23,7 +23,7 @@ public interface CompilationConfiguration {
 @ExperimentalScriptKtApi
 public fun CompilationConfiguration.toScriptCompilationConfiguration(): ScriptCompilationConfiguration =
     ScriptCompilationConfiguration {
-        features.forEach { it.beforeConfiguring(this) }
+        features.forEach { it.beforeConfigure(this) }
         baseClass(this@toScriptCompilationConfiguration.baseClass)
         implicitReceivers(v = this@toScriptCompilationConfiguration.implicitReceivers.map {
             KotlinType(it)
@@ -34,7 +34,7 @@ public fun CompilationConfiguration.toScriptCompilationConfiguration(): ScriptCo
         defaultImports(v = this@toScriptCompilationConfiguration.defaultImports)
         compilerOptions(v = this@toScriptCompilationConfiguration.compilerOptions)
         updateClasspath(classpath)
-        features.forEach { it.afterConfiguring(this) }
+        features.forEach { it.afterConfigure(this) }
     }
 
 public class MutableCompilationConfiguration(

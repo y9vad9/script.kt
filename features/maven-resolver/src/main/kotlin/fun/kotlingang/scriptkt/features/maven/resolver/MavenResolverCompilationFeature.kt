@@ -19,7 +19,7 @@ class MavenResolverCompilationFeature(
 
     companion object Default : CompilationFeature by MavenResolverCompilationFeature()
 
-    override fun afterConfiguring(builder: ScriptCompilationConfiguration.Builder): Unit = with(builder) {
+    override fun afterConfigure(builder: ScriptCompilationConfiguration.Builder): Unit = with(builder) {
         defaultImports(Dependency::class, Repository::class)
         updateClasspath(classpathFromClass<Dependency>()!! + classpathFromClass<Repository>()!!)
         refineConfiguration {
