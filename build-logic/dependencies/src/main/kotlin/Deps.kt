@@ -4,7 +4,7 @@ object Deps {
     const val compileSdkVersion = 30
     const val minSdkVersion = 21
 
-    private const val kotlinVersion = "1.6.0"
+    private const val kotlinVersion = "1.6.10"
     private const val coroutinesVersion = "1.5.2"
     private const val serializationVersion = "1.3.0"
     private const val nodejsExternalsVersion = "0.0.7"
@@ -30,8 +30,15 @@ object Deps {
 
     private const val kvisionVersion = "5.1.1"
     private const val shadowVer = "7.0.0"
+    private const val kspVersion = "1.6.0-1.0.1"
+    private const val implierVer = "1.0.2"
 
     object Libs {
+        object Implier {
+            const val Processor = "com.y9vad9.implier:ksp:$implierVer"
+            const val Annotations = "com.y9vad9.implier:implier:$implierVer"
+        }
+
         object Kotlin {
             object Test {
                 const val JUnit = "org.jetbrains.kotlin:kotlin-test-junit5:$kotlinVersion"
@@ -46,6 +53,10 @@ object Deps {
                 const val Compiler = "org.jetbrains.kotlin:kotlin-compiler:$kotlinVersion"
                 const val Dependencies = "org.jetbrains.kotlin:kotlin-scripting-dependencies:$kotlinVersion"
                 const val DependenciesMaven = "org.jetbrains.kotlin:kotlin-scripting-dependencies-maven:$kotlinVersion"
+            }
+
+            object Compiler {
+                const val Embeddable = "org.jetbrains.kotlin:kotlin-compiler-embeddable:$kotlinVersion"
             }
         }
 
@@ -161,6 +172,11 @@ object Deps {
     object Plugins {
         object Deploy {
             const val Id = "deploy"
+        }
+
+        object KSP {
+            const val Id = "com.google.devtools.ksp"
+            const val Classpath = "com.google.devtools.ksp:symbol-processing-gradle-plugin:$kspVersion"
         }
 
         object Configuration {
