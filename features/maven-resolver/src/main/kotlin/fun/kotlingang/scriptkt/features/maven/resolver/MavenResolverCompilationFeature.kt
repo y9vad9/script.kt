@@ -1,5 +1,6 @@
 package `fun`.kotlingang.scriptkt.features.maven.resolver
 
+import `fun`.kotlingang.scriptkt.annotation.ExperimentalScriptKtApi
 import `fun`.kotlingang.scriptkt.compilation.CompilationFeature
 import `fun`.kotlingang.scriptkt.features.maven.Dependency
 import `fun`.kotlingang.scriptkt.features.maven.Repository
@@ -17,6 +18,7 @@ class MavenResolverCompilationFeatureData(
     var resolver: MavenDependenciesResolver = MavenDependenciesResolver()
 )
 
+@ExperimentalScriptKtApi
 class MavenResolverCompilationFeature(
     private val settings: MavenResolverCompilationFeatureData
 ) : CompilationFeature<MavenResolverCompilationFeatureData> {

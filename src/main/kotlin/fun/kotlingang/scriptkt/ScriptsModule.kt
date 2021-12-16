@@ -1,5 +1,6 @@
 package `fun`.kotlingang.scriptkt
 
+import `fun`.kotlingang.scriptkt.annotation.ExperimentalScriptKtApi
 import `fun`.kotlingang.scriptkt.annotation.UnsafeArgumentsInput
 import `fun`.kotlingang.scriptkt.compilation.CompilationConfiguration
 import `fun`.kotlingang.scriptkt.compilation.ModuleCompiler
@@ -60,7 +61,7 @@ public class NonCompiledConfiguredScriptsModule(
     override val otherScripts: List<ScriptKt>,
     public val evaluationConfiguration: EvaluationConfiguration
 ) : ScriptsModule {
-    @OptIn(UnsafeArgumentsInput::class)
+    @OptIn(UnsafeArgumentsInput::class, ExperimentalScriptKtApi::class)
     public suspend fun compile(compiler: ModuleCompiler): ResultWithDiagnostics<PreevaluatedScriptsModule> {
         return compiler.compile(this) {
             evaluationConfiguration.providedProperties.putAll(this@NonCompiledConfiguredScriptsModule.evaluationConfiguration.providedProperties)

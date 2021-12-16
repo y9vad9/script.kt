@@ -1,7 +1,9 @@
 package `fun`.kotlingang.scriptkt.compilation
 
+import `fun`.kotlingang.scriptkt.annotation.ExperimentalScriptKtApi
 import kotlin.script.experimental.api.ScriptCompilationConfiguration
 
+@ExperimentalScriptKtApi
 public interface CompilationFeature<TConfiguration> {
 
     public interface Builder<TBuilder> {

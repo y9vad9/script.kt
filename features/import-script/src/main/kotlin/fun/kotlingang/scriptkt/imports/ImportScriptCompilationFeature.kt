@@ -1,5 +1,6 @@
 package `fun`.kotlingang.scriptkt.imports
 
+import `fun`.kotlingang.scriptkt.annotation.ExperimentalScriptKtApi
 import `fun`.kotlingang.scriptkt.compilation.CompilationFeature
 import java.io.File
 import kotlin.script.experimental.api.*
@@ -9,6 +10,7 @@ class ImportScriptCompilationData {
     lateinit var rootDirectory: File
 }
 
+@ExperimentalScriptKtApi
 class ImportScriptCompilationFeature(private val settings: ImportScriptCompilationData) :
     CompilationFeature<ImportScriptCompilationData> {
     companion object Builder : CompilationFeature.Builder<ImportScriptCompilationData> {

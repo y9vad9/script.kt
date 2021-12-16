@@ -17,6 +17,7 @@ public interface EvaluationConfiguration {
     @UnsafeArgumentsInput
     public val providedProperties: Map<String, Any?>
 
+    @ExperimentalScriptKtApi
     public val features: List<EvaluationFeature<*>>
 }
 
@@ -45,6 +46,8 @@ public class MutableEvaluationConfiguration(
 
     @UnsafeArgumentsInput
     override val providedProperties: MutableMap<String, Any?> = providedProperties.toMutableMap()
+
+    @ExperimentalScriptKtApi
     override val features: MutableList<EvaluationFeature<*>> = mutableListOf()
     override val baseClassArguments: MutableList<Any?> = baseClassArguments.toMutableList()
 }
