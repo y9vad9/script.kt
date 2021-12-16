@@ -13,7 +13,7 @@ public interface CompilationConfiguration {
     public val defaultImports: List<String>
     public val compilerOptions: List<String>
     public val classpath: Collection<File>
-    public val features: List<CompilationFeature>
+    public val features: List<CompilationFeature<*>>
 }
 
 /**
@@ -46,7 +46,5 @@ public class MutableCompilationConfiguration(
     override val defaultImports: MutableList<String> = mutableListOf("`fun`.kotlingang.scriptkt.*")
     override val compilerOptions: MutableList<String> = mutableListOf()
     override val classpath: MutableCollection<File> = mutableSetOf()
-    override val features: MutableList<CompilationFeature> = mutableListOf()
-
-
+    override val features: MutableList<CompilationFeature<*>> = mutableListOf()
 }

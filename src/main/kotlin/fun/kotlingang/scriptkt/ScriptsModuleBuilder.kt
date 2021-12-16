@@ -51,7 +51,7 @@ public interface ScriptsModuleBuilder {
          * Compilation feature installing.
          * @param feature - feature to install.
          */
-        public fun install(feature: CompilationFeature)
+        public fun <TBuilder> install(feature: CompilationFeature.Builder<TBuilder>, block: TBuilder.() -> Unit)
     }
 
     public interface EvaluationConfigurationBuilder {
@@ -59,8 +59,18 @@ public interface ScriptsModuleBuilder {
          * Compilation feature installing.
          * @param feature - feature to install.
          */
-        public fun install(feature: EvaluationFeature)
+        public fun <TBuilder> install(feature: EvaluationFeature.Builder<TBuilder>, block: TBuilder.() -> Unit)
     }
+}
+
+@OptIn(ExperimentalScriptKtApi::class)
+public fun ScriptsModuleBuilder.CompilationConfigurationBuilder.install(feature: CompilationFeature.Builder<*>) {
+    install(feature) {}
+}
+
+@OptIn(ExperimentalScriptKtApi::class)
+public fun ScriptsModuleBuilder.EvaluationConfigurationBuilder.install(feature: EvaluationFeature.Builder<*>) {
+    install(feature) {}
 }
 
 @OptIn(ExperimentalScriptKtApi::class)
@@ -176,14 +186,14 @@ internal class ScriptsModuleBuilderImpl(
 
     override val compilation: ScriptsModuleBuilder.CompilationConfigurationBuilder =
         object : ScriptsModuleBuilder.CompilationConfigurationBuilder {
-            override fun install(feature: CompilationFeature) {
-                compilationConfiguration.features += feature
+            override fun <TBuilder> install(feature: CompilationFeature.Builder<TBuilder>, block: TBuilder.() -> Unit) {
+                compilationConfiguration.features += feature.install(block)
             }
         }
     override val evaluation: ScriptsModuleBuilder.EvaluationConfigurationBuilder =
         object : ScriptsModuleBuilder.EvaluationConfigurationBuilder {
-            override fun install(feature: EvaluationFeature) {
-                evaluationConfiguration.features += feature
+            override fun <TBuilder> install(feature: EvaluationFeature.Builder<TBuilder>, block: TBuilder.() -> Unit) {
+                evaluationConfiguration.features += feature.install(block)
             }
         }
 }
