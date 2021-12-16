@@ -19,7 +19,7 @@ import kotlin.script.experimental.api.valueOrNull
 import kotlin.script.experimental.api.valueOrThrow
 import kotlin.script.experimental.jvm.util.isError
 
-@ExperimentalScriptKtApi
+@OptIn(ExperimentalScriptKtApi::class)
 @ScriptKtDSL
 public fun moduleKt(mainScript: ScriptKt, block: ScriptsModuleBuilder.() -> Unit): NonCompiledConfiguredScriptsModule {
     val builder = ScriptsModuleBuilderImpl(MutableCompilationConfiguration(), MutableEvaluationConfiguration())
@@ -30,7 +30,6 @@ public fun moduleKt(mainScript: ScriptKt, block: ScriptsModuleBuilder.() -> Unit
 }
 
 @ScriptKtDSL
-@ExperimentalScriptKtApi
 public interface ScriptsModuleBuilder {
     @UnsafeArgumentsInput
     public fun <T : Any> setBaseClass(kClass: KClass<T>, arguments: List<Any?>)
@@ -40,27 +39,42 @@ public interface ScriptsModuleBuilder {
     public fun addScript(scriptKt: ScriptKt)
     public fun defaultImports(imports: List<String>)
 
+    @ExperimentalScriptKtApi
     public val compilation: CompilationConfigurationBuilder
+
+    @ExperimentalScriptKtApi
     public val evaluation: EvaluationConfigurationBuilder
 
     /**
      * Compilation configuration DSL. Used only for installing features due to safe dsl at [ScriptsModuleBuilder]
      */
+    @ExperimentalScriptKtApi
     public interface CompilationConfigurationBuilder {
         /**
          * Compilation feature installing.
          * @param feature - feature to install.
          */
-        public fun install(feature: CompilationFeature)
+        public fun <TBuilder> install(feature: CompilationFeature.Builder<TBuilder>, block: TBuilder.() -> Unit)
     }
 
+    @ExperimentalScriptKtApi
     public interface EvaluationConfigurationBuilder {
         /**
          * Compilation feature installing.
          * @param feature - feature to install.
          */
-        public fun install(feature: EvaluationFeature)
+        public fun <TBuilder> install(feature: EvaluationFeature.Builder<TBuilder>, block: TBuilder.() -> Unit)
     }
+}
+
+@OptIn(ExperimentalScriptKtApi::class)
+public fun ScriptsModuleBuilder.CompilationConfigurationBuilder.install(feature: CompilationFeature.Builder<*>) {
+    install(feature) {}
+}
+
+@OptIn(ExperimentalScriptKtApi::class)
+public fun ScriptsModuleBuilder.EvaluationConfigurationBuilder.install(feature: EvaluationFeature.Builder<*>) {
+    install(feature) {}
 }
 
 @OptIn(ExperimentalScriptKtApi::class)
@@ -95,7 +109,6 @@ public inline fun <reified T : Any> ScriptsModuleBuilder.addImplicitReceiver(ins
  * Compiles module and evaluates module.
  * If any error happened it will return nullable value.
  */
-@ExperimentalScriptKtApi
 public suspend fun NonCompiledConfiguredScriptsModule.runScriptOrNull(
     compiler: ModuleCompiler = JvmHostModuleCompiler(),
     evaluator: ModuleEvaluator = JvmHostModuleEvaluator()
@@ -110,7 +123,6 @@ public suspend fun NonCompiledConfiguredScriptsModule.runScriptOrNull(
  * Compiles module and evaluates module.
  * If some error happened it will throw it.
  */
-@ExperimentalScriptKtApi
 public suspend fun NonCompiledConfiguredScriptsModule.runScriptOrThrow(
     compiler: ModuleCompiler = JvmHostModuleCompiler(),
     evaluator: ModuleEvaluator = JvmHostModuleEvaluator()
@@ -122,7 +134,6 @@ public suspend fun NonCompiledConfiguredScriptsModule.runScriptOrThrow(
  * Compiles module and evaluates module.
  * If some error happened it will throw it.
  */
-@ExperimentalScriptKtApi
 public suspend fun NonCompiledConfiguredScriptsModule.runScriptReported(
     compiler: ModuleCompiler = JvmHostModuleCompiler(),
     evaluator: ModuleEvaluator = JvmHostModuleEvaluator()
@@ -176,14 +187,14 @@ internal class ScriptsModuleBuilderImpl(
 
     override val compilation: ScriptsModuleBuilder.CompilationConfigurationBuilder =
         object : ScriptsModuleBuilder.CompilationConfigurationBuilder {
-            override fun install(feature: CompilationFeature) {
-                compilationConfiguration.features += feature
+            override fun <TBuilder> install(feature: CompilationFeature.Builder<TBuilder>, block: TBuilder.() -> Unit) {
+                compilationConfiguration.features += feature.install(block)
             }
         }
     override val evaluation: ScriptsModuleBuilder.EvaluationConfigurationBuilder =
         object : ScriptsModuleBuilder.EvaluationConfigurationBuilder {
-            override fun install(feature: EvaluationFeature) {
-                evaluationConfiguration.features += feature
+            override fun <TBuilder> install(feature: EvaluationFeature.Builder<TBuilder>, block: TBuilder.() -> Unit) {
+                evaluationConfiguration.features += feature.install(block)
             }
         }
 }

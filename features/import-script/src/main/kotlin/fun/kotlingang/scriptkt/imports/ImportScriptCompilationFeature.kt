@@ -1,11 +1,24 @@
 package `fun`.kotlingang.scriptkt.imports
 
+import `fun`.kotlingang.scriptkt.annotation.ExperimentalScriptKtApi
 import `fun`.kotlingang.scriptkt.compilation.CompilationFeature
 import java.io.File
 import kotlin.script.experimental.api.*
 import kotlin.script.experimental.host.toScriptSource
 
-class ImportScriptCompilationFeature(private val rootDirectory: File) : CompilationFeature {
+class ImportScriptCompilationData {
+    lateinit var rootDirectory: File
+}
+
+@ExperimentalScriptKtApi
+class ImportScriptCompilationFeature(private val settings: ImportScriptCompilationData) :
+    CompilationFeature<ImportScriptCompilationData> {
+    companion object Builder : CompilationFeature.Builder<ImportScriptCompilationData> {
+        override fun install(block: ImportScriptCompilationData.() -> Unit): CompilationFeature<*> {
+            return ImportScriptCompilationFeature(ImportScriptCompilationData().apply(block))
+        }
+    }
+
     override fun afterConfigure(builder: ScriptCompilationConfiguration.Builder) = with(builder) {
         refineConfiguration {
             onAnnotations(ImportScript::class) { context ->
@@ -15,7 +28,12 @@ class ImportScriptCompilationFeature(private val rootDirectory: File) : Compilat
                 } ?: return@onAnnotations context.compilationConfiguration.asSuccess()
 
                 annotations.filter { it.annotation is ImportScript }.forEach { annotation ->
-                    sources += (annotation.annotation as ImportScript).names.map { it.toScriptSource() }
+                    sources += (annotation.annotation as ImportScript).names.map {
+                        File(
+                            settings.rootDirectory,
+                            it
+                        ).readText().toScriptSource(it)
+                    }
                 }
 
                 return@onAnnotations context.compilationConfiguration.with {

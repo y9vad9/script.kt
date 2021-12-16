@@ -2,6 +2,7 @@ import `fun`.kotlingang.scriptkt.annotation.ExperimentalScriptKtApi
 import `fun`.kotlingang.scriptkt.compilation.JvmHostModuleCompiler
 import `fun`.kotlingang.scriptkt.evaluation.JvmHostModuleEvaluator
 import `fun`.kotlingang.scriptkt.features.maven.resolver.MavenResolverCompilationFeature
+import `fun`.kotlingang.scriptkt.install
 import `fun`.kotlingang.scriptkt.moduleKt
 import `fun`.kotlingang.scriptkt.scriptOf
 import kotlinx.coroutines.runBlocking

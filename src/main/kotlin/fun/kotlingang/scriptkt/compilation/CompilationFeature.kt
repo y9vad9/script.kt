@@ -1,8 +1,15 @@
 package `fun`.kotlingang.scriptkt.compilation
 
+import `fun`.kotlingang.scriptkt.annotation.ExperimentalScriptKtApi
 import kotlin.script.experimental.api.ScriptCompilationConfiguration
 
-public interface CompilationFeature {
+@ExperimentalScriptKtApi
+public interface CompilationFeature<TConfiguration> {
+
+    public interface Builder<TBuilder> {
+        public fun install(block: TBuilder.() -> Unit): CompilationFeature<*>
+    }
+
     /**
      * Evaluates before setting specified by user configuration.
      */

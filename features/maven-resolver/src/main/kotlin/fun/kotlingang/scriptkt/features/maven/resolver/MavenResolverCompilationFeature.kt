@@ -1,5 +1,6 @@
 package `fun`.kotlingang.scriptkt.features.maven.resolver
 
+import `fun`.kotlingang.scriptkt.annotation.ExperimentalScriptKtApi
 import `fun`.kotlingang.scriptkt.compilation.CompilationFeature
 import `fun`.kotlingang.scriptkt.features.maven.Dependency
 import `fun`.kotlingang.scriptkt.features.maven.Repository
@@ -13,11 +14,19 @@ import kotlin.script.experimental.jvm.JvmDependency
 import kotlin.script.experimental.jvm.updateClasspath
 import kotlin.script.experimental.jvm.util.classpathFromClass
 
-class MavenResolverCompilationFeature(
-    private val resolver: MavenDependenciesResolver = MavenDependenciesResolver()
-) : CompilationFeature {
+class MavenResolverCompilationFeatureData(
+    var resolver: MavenDependenciesResolver = MavenDependenciesResolver()
+)
 
-    companion object Default : CompilationFeature by MavenResolverCompilationFeature()
+@ExperimentalScriptKtApi
+class MavenResolverCompilationFeature(
+    private val settings: MavenResolverCompilationFeatureData
+) : CompilationFeature<MavenResolverCompilationFeatureData> {
+    companion object Builder : CompilationFeature.Builder<MavenResolverCompilationFeatureData> {
+        override fun install(block: MavenResolverCompilationFeatureData.() -> Unit): CompilationFeature<*> {
+            return MavenResolverCompilationFeature(MavenResolverCompilationFeatureData().also(block))
+        }
+    }
 
     override fun afterConfigure(builder: ScriptCompilationConfiguration.Builder): Unit = with(builder) {
         defaultImports(Dependency::class, Repository::class)
@@ -31,17 +40,18 @@ class MavenResolverCompilationFeature(
                         ?: return@onAnnotations context.compilationConfiguration.asSuccess()
 
                 annotations.filter { it.annotation is Repository }.forEach {
-                    resolver.addRepository(RepositoryCoordinates((it.annotation as Repository).repository))
+                    settings.resolver.addRepository(RepositoryCoordinates((it.annotation as Repository).repository))
                 }
 
                 runBlocking {
                     annotations.filter { it.annotation is Dependency }.forEach { sourceAnnotation ->
                         launch {
-                            resolver.resolve((sourceAnnotation.annotation as Dependency).coordinates).also { result ->
-                                reports += result.reports
-                                if (result.valueOrNull() != null)
-                                    classpath += result.valueOrThrow()
-                            }
+                            settings.resolver.resolve((sourceAnnotation.annotation as Dependency).coordinates)
+                                .also { result ->
+                                    reports += result.reports
+                                    if (result.valueOrNull() != null)
+                                        classpath += result.valueOrThrow()
+                                }
                         }
                     }
                 }

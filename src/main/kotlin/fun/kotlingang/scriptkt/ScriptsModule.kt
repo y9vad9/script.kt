@@ -53,13 +53,7 @@ public class EvaluatedScriptsModule(
     override val compilationConfiguration: CompilationConfiguration,
     override val evaluationConfiguration: EvaluationConfiguration,
     public val resultValue: ResultValue
-) : CompiledScriptsModule {
-    @ExperimentalScriptKtApi
-    public fun reevaluate(): EvaluatedScriptsModule {
-        resultValue.scriptClass?.constructors?.first()?.call()
-        return this
-    }
-}
+) : CompiledScriptsModule
 
 public class NonCompiledConfiguredScriptsModule(
     override val mainScript: ScriptKt,
@@ -67,7 +61,7 @@ public class NonCompiledConfiguredScriptsModule(
     override val otherScripts: List<ScriptKt>,
     public val evaluationConfiguration: EvaluationConfiguration
 ) : ScriptsModule {
-    @OptIn(UnsafeArgumentsInput::class)
+    @OptIn(UnsafeArgumentsInput::class, ExperimentalScriptKtApi::class)
     public suspend fun compile(compiler: ModuleCompiler): ResultWithDiagnostics<PreevaluatedScriptsModule> {
         return compiler.compile(this) {
             evaluationConfiguration.providedProperties.putAll(this@NonCompiledConfiguredScriptsModule.evaluationConfiguration.providedProperties)
