@@ -1,6 +1,5 @@
 package `fun`.kotlingang.scriptkt
 
-import `fun`.kotlingang.scriptkt.annotation.ExperimentalScriptKtApi
 import `fun`.kotlingang.scriptkt.annotation.UnsafeArgumentsInput
 import `fun`.kotlingang.scriptkt.compilation.CompilationConfiguration
 import `fun`.kotlingang.scriptkt.compilation.ModuleCompiler
@@ -53,13 +52,7 @@ public class EvaluatedScriptsModule(
     override val compilationConfiguration: CompilationConfiguration,
     override val evaluationConfiguration: EvaluationConfiguration,
     public val resultValue: ResultValue
-) : CompiledScriptsModule {
-    @ExperimentalScriptKtApi
-    public fun reevaluate(): EvaluatedScriptsModule {
-        resultValue.scriptClass?.constructors?.first()?.call()
-        return this
-    }
-}
+) : CompiledScriptsModule
 
 public class NonCompiledConfiguredScriptsModule(
     override val mainScript: ScriptKt,
