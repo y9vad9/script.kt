@@ -70,9 +70,9 @@ And then we need to add dependency:
 
 ```kotlin
 dependencies {
-    implementation("fun.kotlingang.scriptkt:scriptkt:$version")
+    implementation("com.y9vad9.scriptkt:scriptkt:$version")
     // builtins (optional)
-    implementation("fun.kotlingang.scriptkt:maven-resolver:$version")
-    implementation("fun.kotlingang.scriptkt:import-script:$version")
+    implementation("com.y9vad9.scriptkt:maven-resolver:$version")
+    implementation("com.y9vad9.scriptkt:import-script:$version")
 }
 ```

@@ -1,4 +1,4 @@
 object AppInfo {
-    const val PACKAGE = "fun.kotlingang.scriptkt"
-    const val VERSION = "0.0.4"
+    const val PACKAGE = "com.y9vad9.scriptkt"
+    const val VERSION = "0.0.5"
 }
