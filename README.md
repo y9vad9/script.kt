@@ -1,4 +1,4 @@
-![Maven metadata URL](https://img.shields.io/maven-metadata/v?label=%24version&metadataUrl=https%3A%2F%2Fmaven.kotlingang.fun%2Ffun%2Fkotlingang%2Fscriptkt%2Fscriptkt%2Fmaven-metadata.xml)
+![Maven metadata URL](https://img.shields.io/maven-metadata/v?label=%24version&metadataUrl=https%3A%2F%2Fmaven.y9vad9.com%2Fcom%2Fy9vad9%2Fscriptkt%2Fscriptkt%2Fmaven-metadata.xml)
 
 # script.kt
 
