@@ -22,6 +22,7 @@ class ImportScriptCompilationFeature(private val settings: ImportScriptCompilati
     }
 
     override fun afterConfigure(builder: ScriptCompilationConfiguration.Builder) = with(builder) {
+        defaultImports(ImportScript::class)
         refineConfiguration {
             onAnnotations(ImportScript::class) { context ->
                 val sources = mutableListOf<SourceCode>()

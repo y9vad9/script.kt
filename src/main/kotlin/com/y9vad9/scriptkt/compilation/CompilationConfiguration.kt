@@ -45,7 +45,7 @@ public class MutableCompilationConfiguration(
 ) : CompilationConfiguration {
     override val implicitReceivers: MutableList<KClass<*>> = implicitReceivers.toMutableList()
     override val providedProperties: MutableMap<String, KClass<*>> = mutableMapOf()
-    override val defaultImports: MutableList<String> = mutableListOf("`fun`.kotlingang.scriptkt.*")
+    override val defaultImports: MutableList<String> = mutableListOf("com.y9vad9.scripkt.*")
     override val compilerOptions: MutableList<String> = mutableListOf()
     override val classpath: MutableCollection<File> = mutableSetOf()
 
