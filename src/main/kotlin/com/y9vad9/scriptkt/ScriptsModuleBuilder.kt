@@ -19,15 +19,17 @@ import kotlin.script.experimental.api.valueOrNull
 import kotlin.script.experimental.api.valueOrThrow
 import kotlin.script.experimental.jvm.util.isError
 
-@OptIn(ExperimentalScriptKtApi::class)
 @ScriptKtDSL
-public fun moduleKt(mainScript: ScriptKt, block: ScriptsModuleBuilder.() -> Unit): NonCompiledConfiguredScriptsModule {
+public fun moduleKts(mainScript: ScriptKt, block: ScriptsModuleBuilder.() -> Unit): NonCompiledConfiguredScriptsModule {
     val builder = ScriptsModuleBuilderImpl(MutableCompilationConfiguration(), MutableEvaluationConfiguration())
     builder.apply(block)
     return NonCompiledConfiguredScriptsModule(
         mainScript, builder.compilationConfiguration, builder.otherScripts, builder.evaluationConfiguration
     )
 }
+
+@ScriptKtDSL
+public fun moduleKts(mainScript: ScriptKt): NonCompiledConfiguredScriptsModule = moduleKts(mainScript) {}
 
 @ScriptKtDSL
 public interface ScriptsModuleBuilder {
@@ -77,23 +79,19 @@ public fun ScriptsModuleBuilder.EvaluationConfigurationBuilder.install(feature: 
     install(feature) {}
 }
 
-@OptIn(ExperimentalScriptKtApi::class)
 public fun ScriptsModuleBuilder.defaultImports(vararg imports: String) {
     defaultImports(imports.toList())
 }
 
-@OptIn(ExperimentalScriptKtApi::class)
 public inline fun <reified T : Any> ScriptsModuleBuilder.provideProperty(name: String, instance: T) {
     provideProperty(name, T::class, instance)
 }
 
-@OptIn(ExperimentalScriptKtApi::class)
 @UnsafeArgumentsInput
 public inline fun <reified T : Any> ScriptsModuleBuilder.setBaseClass(arguments: List<Any?>) {
     setBaseClass(T::class, arguments)
 }
 
-@OptIn(ExperimentalScriptKtApi::class)
 @UnsafeArgumentsInput
 public inline fun <reified T : Any> ScriptsModuleBuilder.setBaseClass(vararg arguments: Any?) {
     setBaseClass(T::class, arguments.toList())

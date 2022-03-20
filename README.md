@@ -11,7 +11,7 @@ Convenient Kotlin Script wrapper. The main goal of this library is to simplify w
 Simple DSL for scripts that do not need any customization, but just type-safe code.
 
 ```kotlin
-moduleKt(mainScript = scriptOf(code = "..")) {
+moduleKts(mainScript = scriptOf(code = "..")) {
     setBaseClass<Foo>(arguments = listOf(Bar()))
     addImplicitReceiver<FooBar>(instance = FooBar())
 }
