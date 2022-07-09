@@ -1,10 +1,10 @@
-import `fun`.kotlingang.scriptkt.annotation.ExperimentalScriptKtApi
-import `fun`.kotlingang.scriptkt.compilation.JvmHostModuleCompiler
-import `fun`.kotlingang.scriptkt.evaluation.JvmHostModuleEvaluator
-import `fun`.kotlingang.scriptkt.features.maven.resolver.MavenResolverCompilationFeature
-import `fun`.kotlingang.scriptkt.install
-import `fun`.kotlingang.scriptkt.moduleKt
-import `fun`.kotlingang.scriptkt.scriptOf
+import com.y9vad9.scriptkt.annotation.ExperimentalScriptKtApi
+import com.y9vad9.scriptkt.compilation.JvmHostModuleCompiler
+import com.y9vad9.scriptkt.evaluation.JvmHostModuleEvaluator
+import com.y9vad9.scriptkt.features.maven.resolver.MavenResolverCompilationFeature
+import com.y9vad9.scriptkt.install
+import com.y9vad9.scriptkt.moduleKts
+import com.y9vad9.scriptkt.scriptOf
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.junit.platform.commons.annotation.Testable
@@ -27,7 +27,7 @@ object MavenTest {
     @OptIn(ExperimentalScriptKtApi::class)
     @Test
     fun testDependencies(): Unit = runBlocking {
-        moduleKt(scriptOf(CODE)) {
+        moduleKts(scriptOf(CODE)) {
             compilation.install(MavenResolverCompilationFeature)
         }.compile(JvmHostModuleCompiler()).apply {
             println(reports.joinToString("\n") { it.render() })

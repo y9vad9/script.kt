@@ -4,7 +4,7 @@ object Deps {
     const val compileSdkVersion = 30
     const val minSdkVersion = 21
 
-    private const val kotlinVersion = "1.6.10"
+    private const val kotlinVersion = "1.7.0"
     private const val coroutinesVersion = "1.5.2"
     private const val serializationVersion = "1.3.0"
     private const val nodejsExternalsVersion = "0.0.7"
@@ -47,6 +47,7 @@ object Deps {
             object Script {
                 const val Common = "org.jetbrains.kotlin:kotlin-scripting-common:$kotlinVersion"
                 const val Jvm = "org.jetbrains.kotlin:kotlin-scripting-jvm:$kotlinVersion"
+                const val Js = "org.jetbrains.kotlin:kotlin-scripting-js:$kotlinVersion"
                 const val JvmHost = "org.jetbrains.kotlin:kotlin-scripting-jvm-host:$kotlinVersion"
                 const val CompilerEmbeddable =
                     "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:$kotlinVersion"

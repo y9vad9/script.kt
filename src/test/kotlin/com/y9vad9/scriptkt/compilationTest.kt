@@ -1,9 +1,9 @@
 package com.y9vad9.scriptkt
 
-import `fun`.kotlingang.scriptkt.annotation.ExperimentalScriptKtApi
-import `fun`.kotlingang.scriptkt.annotation.UnsafeArgumentsInput
-import `fun`.kotlingang.scriptkt.compilation.JvmHostModuleCompiler
-import `fun`.kotlingang.scriptkt.evaluation.JvmHostModuleEvaluator
+import com.y9vad9.scriptkt.annotation.ExperimentalScriptKtApi
+import com.y9vad9.scriptkt.annotation.UnsafeArgumentsInput
+import com.y9vad9.scriptkt.compilation.JvmHostModuleCompiler
+import com.y9vad9.scriptkt.evaluation.JvmHostModuleEvaluator
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.junit.platform.commons.annotation.Testable
@@ -63,7 +63,7 @@ object ModulesTest {
     @OptIn(ExperimentalScriptKtApi::class, UnsafeArgumentsInput::class)
     @Test
     fun dslTest(): Unit = runBlocking {
-        moduleKt(scriptOf(code = "println(test)")) {
+        moduleKts(scriptOf(code = "println(test)")) {
             provideProperty(name = "test", instance = "text")
             setBaseClass<BaseClass>(arguments = listOf("Test"))
             addImplicitReceiver(instance = ImplicitReceiver(2))
